@@ -5,6 +5,7 @@ import { usePublishedProjects } from '@/hooks/useProjects'
 import { PROJECT_CATEGORIES, type ProjectCategory } from '@/lib/types'
 import { ProjectCard } from '@/components/ProjectCard'
 import { ProjectCardSkeleton } from '@/components/ui/Skeleton'
+import { Tilt } from '@/components/ui/Tilt'
 import { PageHero } from '@/components/sections/PageHero'
 import { useDocumentMeta } from '@/hooks/useDocumentMeta'
 import { cn } from '@/lib/cn'
@@ -69,7 +70,9 @@ export default function Projects() {
                   exit={{ opacity: 0, scale: 0.94 }}
                   transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
                 >
-                  <ProjectCard project={project} index={i} />
+                  <Tilt className="h-full" max={8}>
+                    <ProjectCard project={project} index={i} />
+                  </Tilt>
                 </motion.div>
               ))}
             </AnimatePresence>

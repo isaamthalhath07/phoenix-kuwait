@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next'
 import { SERVICES } from '@/lib/constants'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { Reveal } from '@/components/ui/Reveal'
+import { Tilt } from '@/components/ui/Tilt'
 
 const ICONS: Record<string, LucideIcon> = {
   Building2,
@@ -37,17 +38,19 @@ export function Services() {
           const Icon = ICONS[service.icon] ?? Building2
           return (
             <Reveal key={service.key} delay={i * 0.07} variant="up">
-              <article className="card-glow border-glow group h-full rounded-2xl bg-ink-850 p-7">
-                <div className="relative inline-flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-ember-500/20 to-ember-600/5 text-ember-400 transition-all duration-500 group-hover:from-ember-500 group-hover:to-ember-600 group-hover:text-white">
-                  <Icon className="h-7 w-7" />
-                </div>
-                <h3 className="mt-6 text-xl font-bold text-white">
-                  {t(`services.${service.key}.title`)}
-                </h3>
-                <p className="mt-3 text-sm leading-relaxed text-ink-300">
-                  {t(`services.${service.key}.desc`)}
-                </p>
-              </article>
+              <Tilt className="h-full" max={9}>
+                <article className="card-glow border-glow group h-full rounded-2xl bg-ink-850 p-7 [transform-style:preserve-3d]">
+                  <div className="relative inline-flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-ember-500/20 to-ember-600/5 text-ember-400 transition-all duration-500 group-hover:from-ember-500 group-hover:to-ember-600 group-hover:text-white [transform:translateZ(28px)]">
+                    <Icon className="h-7 w-7" />
+                  </div>
+                  <h3 className="mt-6 text-xl font-bold text-white [transform:translateZ(18px)]">
+                    {t(`services.${service.key}.title`)}
+                  </h3>
+                  <p className="mt-3 text-sm leading-relaxed text-ink-300">
+                    {t(`services.${service.key}.desc`)}
+                  </p>
+                </article>
+              </Tilt>
             </Reveal>
           )
         })}

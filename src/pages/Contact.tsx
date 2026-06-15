@@ -15,26 +15,51 @@ const encode = (data: Record<string, string>) =>
     .map((k) => encodeURIComponent(k) + '=' + encodeURIComponent(data[k]))
     .join('&')
 
+/** Keep only valid phone characters: digits, spaces, hyphens, parentheses, and a single leading "+". */
+function sanitizePhone(raw: string): string {
+  let v = raw.replace(/[^\d+()\s-]/g, '')
+  const hasPlus = v.trimStart().startsWith('+')
+  v = v.replace(/\+/g, '') // strip all "+"
+  if (hasPlus) v = '+' + v // re-add a single leading "+"
+  return v.replace(/\s{2,}/g, ' ').replace(/-{2,}/g, '-').slice(0, 20)
+}
+
+const digitCount = (v: string) => (v.match(/\d/g) ?? []).length
+
 export default function Contact() {
   const { t } = useTranslation()
   const { pick } = useLocale()
   const [status, setStatus] = useState<Status>('idle')
   const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' })
+  const [phoneTouched, setPhoneTouched] = useState(false)
 
   useDocumentMeta(t('contact.title'), t('contact.subtitle'))
 
+  // Phone is optional, but if provided it must contain a plausible number of digits.
+  const phoneInvalid = form.phone.trim().length > 0 && (digitCount(form.phone) < 7 || digitCount(form.phone) > 15)
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    setPhoneTouched(true)
+    if (phoneInvalid) return
     setStatus('sending')
     try {
       const res = await fetch('/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: encode({ 'form-name': 'contact', 'bot-field': '', ...form }),
+        body: encode({
+          'form-name': 'contact',
+          'bot-field': '',
+          name: form.name.trim(),
+          email: form.email.trim(),
+          phone: form.phone.trim(),
+          message: form.message.trim(),
+        }),
       })
       if (!res.ok) throw new Error('Network error')
       setStatus('success')
       setForm({ name: '', email: '', phone: '', message: '' })
+      setPhoneTouched(false)
     } catch {
       setStatus('error')
     }
@@ -98,6 +123,7 @@ export default function Contact() {
             data-netlify="true"
             netlify-honeypot="bot-field"
             onSubmit={handleSubmit}
+            noValidate
             className="rounded-3xl border border-white/10 bg-ink-850 p-7 sm:p-9"
           >
             <input type="hidden" name="form-name" value="contact" />
@@ -111,6 +137,7 @@ export default function Contact() {
               <Field
                 label={t('contact.name')}
                 name="name"
+                autoComplete="name"
                 value={form.name}
                 onChange={(v) => setForm((f) => ({ ...f, name: v }))}
                 required
@@ -119,8 +146,14 @@ export default function Contact() {
                 label={t('contact.phone')}
                 name="phone"
                 type="tel"
+                dir="ltr"
+                inputMode="tel"
+                autoComplete="tel"
+                placeholder="+965 0000 0000"
                 value={form.phone}
-                onChange={(v) => setForm((f) => ({ ...f, phone: v }))}
+                onChange={(v) => setForm((f) => ({ ...f, phone: sanitizePhone(v) }))}
+                onBlur={() => setPhoneTouched(true)}
+                error={phoneTouched && phoneInvalid ? t('contact.phoneInvalid') : undefined}
               />
             </div>
             <div className="mt-5">
@@ -128,6 +161,9 @@ export default function Contact() {
                 label={t('contact.email')}
                 name="email"
                 type="email"
+                inputMode="email"
+                autoComplete="email"
+                dir="ltr"
                 value={form.email}
                 onChange={(v) => setForm((f) => ({ ...f, email: v }))}
                 required
@@ -180,27 +216,53 @@ function Field({
   name,
   value,
   onChange,
+  onBlur,
   type = 'text',
+  inputMode,
+  autoComplete,
+  dir,
+  placeholder,
   required,
+  error,
 }: {
   label: string
   name: string
   value: string
   onChange: (v: string) => void
+  onBlur?: () => void
   type?: string
+  inputMode?: 'text' | 'tel' | 'email' | 'numeric'
+  autoComplete?: string
+  dir?: 'ltr' | 'rtl'
+  placeholder?: string
   required?: boolean
+  error?: string
 }) {
   return (
     <div>
-      <label className="mb-2 block text-sm font-medium text-ink-200">{label}</label>
+      <label className="mb-2 block text-sm font-medium text-ink-200">
+        {label}
+        {required && <span className="text-ember-400"> *</span>}
+      </label>
       <input
         type={type}
         name={name}
         required={required}
         value={value}
+        dir={dir}
+        inputMode={inputMode}
+        autoComplete={autoComplete}
+        placeholder={placeholder}
+        aria-invalid={Boolean(error)}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-xl border border-white/10 bg-ink-900 px-4 py-3 text-white placeholder-ink-400 outline-none transition-colors focus:border-ember-400 focus:ring-2 focus:ring-ember-500/20"
+        onBlur={onBlur}
+        className={`w-full rounded-xl border bg-ink-900 px-4 py-3 text-white placeholder-ink-400 outline-none transition-colors focus:ring-2 ${
+          error
+            ? 'border-red-400/60 focus:border-red-400 focus:ring-red-500/20'
+            : 'border-white/10 focus:border-ember-400 focus:ring-ember-500/20'
+        }`}
       />
+      {error && <p className="mt-1.5 text-xs text-red-300">{error}</p>}
     </div>
   )
 }

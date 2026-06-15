@@ -2,7 +2,7 @@ import { CheckCircle2, ArrowRight, ArrowLeft } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { Reveal } from '@/components/ui/Reveal'
 import { Button } from '@/components/ui/Button'
-import { PhoenixMark } from '@/components/Logo'
+import { Structure3D } from '@/components/Structure3D'
 import { useLocale } from '@/hooks/useLocale'
 
 export function AboutPreview() {
@@ -27,7 +27,7 @@ export function AboutPreview() {
                   backgroundSize: '40px 40px',
                 }}
               />
-              <PhoenixMark className="absolute left-1/2 top-1/2 h-44 w-44 -translate-x-1/2 -translate-y-1/2 animate-float drop-shadow-[0_0_40px_rgba(249,115,22,0.5)]" />
+              <Structure3D className="absolute inset-0" />
               <div className="absolute bottom-6 start-6 end-6 glass rounded-2xl p-5">
                 <p className="font-display text-3xl font-extrabold text-white">15+</p>
                 <p className="text-sm text-ink-300">{t('stats.years')}</p>

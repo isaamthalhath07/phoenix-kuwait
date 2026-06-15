@@ -139,6 +139,7 @@ const en = {
       sending: 'Sending…',
       success: 'Thank you! Your message has been sent. We will be in touch soon.',
       error: 'Something went wrong. Please try again or call us directly.',
+      phoneInvalid: 'Please enter a valid phone number.',
       infoTitle: 'Contact information',
       hours: 'Sun – Thu, 8:00 AM – 5:00 PM',
       hoursTitle: 'Working hours',

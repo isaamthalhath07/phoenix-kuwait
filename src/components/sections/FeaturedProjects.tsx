@@ -6,6 +6,7 @@ import { ProjectCardSkeleton } from '@/components/ui/Skeleton'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { Button } from '@/components/ui/Button'
 import { Reveal } from '@/components/ui/Reveal'
+import { Tilt } from '@/components/ui/Tilt'
 import { useLocale } from '@/hooks/useLocale'
 
 export function FeaturedProjects() {
@@ -26,7 +27,11 @@ export function FeaturedProjects() {
         {loading ? (
           Array.from({ length: 3 }).map((_, i) => <ProjectCardSkeleton key={i} />)
         ) : data.length > 0 ? (
-          data.map((project, i) => <ProjectCard key={project.id} project={project} index={i} />)
+          data.map((project, i) => (
+            <Tilt key={project.id} className="h-full" max={8}>
+              <ProjectCard project={project} index={i} />
+            </Tilt>
+          ))
         ) : (
           <p className="col-span-full rounded-2xl border border-dashed border-white/10 py-16 text-center text-ink-400">
             {t('projects.empty')}
