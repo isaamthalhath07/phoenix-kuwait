@@ -88,6 +88,36 @@
   100% { transform: translateY(-110vh) translateX(var(--drift, 40px)) scale(0.2) rotate(180deg); opacity: 0; }
 }
 
+@keyframes pillar-build {
+  0%, 8% {
+    transform: translateX(var(--px)) translateZ(var(--pz)) scaleY(0);
+    opacity: 0;
+  }
+  18%, 85% {
+    transform: translateX(var(--px)) translateZ(var(--pz)) scaleY(1);
+    opacity: 1;
+  }
+  92%, 100% {
+    transform: translateX(var(--px)) translateZ(var(--pz)) scaleY(0);
+    opacity: 0;
+  }
+}
+
+@keyframes floor-build {
+  0%, 22% {
+    transform: translateY(var(--y-dest)) rotateX(90deg) scale(0);
+    opacity: 0;
+  }
+  35%, 85% {
+    transform: translateY(var(--y-dest)) rotateX(90deg) scale(1);
+    opacity: 1;
+  }
+  92%, 100% {
+    transform: translateY(var(--y-dest)) rotateX(90deg) scale(0);
+    opacity: 0;
+  }
+}
+
 @keyframes scan-line {
   0% { transform: translateY(-100%); }
   100% { transform: translateY(200%); }
