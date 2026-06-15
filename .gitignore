@@ -20,6 +20,9 @@ dist-ssr
 # Netlify
 .netlify
 
+# Local Claude Code tooling
+.claude
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
