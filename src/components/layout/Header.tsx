@@ -16,7 +16,7 @@ export function Header() {
   const location = useLocation()
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24)
+    const onScroll = () => setScrolled(window.scrollY > 20)
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
@@ -37,17 +37,24 @@ export function Header() {
     <header
       className={cn(
         'fixed inset-x-0 top-0 z-50 transition-all duration-500',
-        scrolled
-          ? 'border-b border-white/5 bg-ink-950/85 py-3 backdrop-blur-xl'
-          : 'bg-transparent py-5',
+        scrolled ? 'top-4 px-4 sm:px-6' : 'top-0 px-0',
       )}
     >
-      <div className="container-x flex items-center justify-between gap-4">
-        <Link to="/" aria-label="Phoenix Kuwait home">
-          <Logo />
+      <div
+        className={cn(
+          'mx-auto flex items-center justify-between gap-4 transition-all duration-500',
+          scrolled
+            ? 'cyber-glass max-w-6xl rounded-full px-6 py-2.5 border border-ember-500/25 shadow-lg shadow-ember-950/40'
+            : 'container-x py-6 bg-transparent border-b border-transparent',
+        )}
+      >
+        <Link to="/" aria-label="Phoenix Kuwait home" className="group">
+          <div className="transition-transform duration-300 group-hover:scale-105">
+            <Logo />
+          </div>
         </Link>
 
-        <nav className="hidden items-center gap-1 lg:flex">
+        <nav className="hidden items-center gap-1.5 lg:flex">
           {NAV_ITEMS.map((item) => (
             <NavLink
               key={item.to}
@@ -55,8 +62,10 @@ export function Header() {
               end={item.to === '/'}
               className={({ isActive }) =>
                 cn(
-                  'link-underline rounded-full px-4 py-2 text-sm font-medium transition-colors',
-                  isActive ? 'text-white' : 'text-ink-300 hover:text-white',
+                  'relative rounded-full px-4 py-2 text-sm font-semibold tracking-wide transition-all duration-300',
+                  isActive
+                    ? 'text-white bg-white/5 border border-ember-500/20 shadow-[0_0_12px_rgba(249,115,22,0.15)]'
+                    : 'text-ink-300 hover:text-white hover:bg-white/5 border border-transparent',
                 )
               }
             >
@@ -65,9 +74,9 @@ export function Header() {
           ))}
         </nav>
 
-        <div className="hidden items-center gap-3 lg:flex">
+        <div className="hidden items-center gap-3.5 lg:flex">
           <LanguageSwitcher />
-          <Button to="/contact" size="md">
+          <Button to="/contact" size="md" className="cyber-corners shadow-[0_0_15px_rgba(249,115,22,0.15)]">
             {t('nav.getQuote')}
           </Button>
         </div>
@@ -79,7 +88,7 @@ export function Header() {
             onClick={() => setOpen((v) => !v)}
             aria-label="Toggle menu"
             aria-expanded={open}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-white"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-white bg-ink-900/60 backdrop-blur-md transition-colors hover:border-ember-500/30"
           >
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
@@ -93,7 +102,7 @@ export function Header() {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            className="overflow-hidden border-t border-white/5 bg-ink-950/95 backdrop-blur-xl lg:hidden"
+            className="overflow-hidden border-t border-white/5 bg-ink-950/98 backdrop-blur-2xl lg:hidden mt-2 rounded-2xl mx-4 border border-ember-500/20"
           >
             <nav className="container-x flex flex-col gap-1 py-5">
               {NAV_ITEMS.map((item, i) => (
@@ -108,8 +117,10 @@ export function Header() {
                     end={item.to === '/'}
                     className={({ isActive }) =>
                       cn(
-                        'block rounded-xl px-4 py-3 text-base font-medium transition-colors',
-                        isActive ? 'bg-white/5 text-ember-300' : 'text-ink-200 hover:bg-white/5',
+                        'block rounded-xl px-4 py-3 text-base font-semibold transition-all',
+                        isActive 
+                          ? 'bg-white/5 text-ember-400 border-l-2 border-ember-500 pl-3' 
+                          : 'text-ink-200 hover:bg-white/5 pl-4',
                       )
                     }
                   >
@@ -127,3 +138,4 @@ export function Header() {
     </header>
   )
 }
+

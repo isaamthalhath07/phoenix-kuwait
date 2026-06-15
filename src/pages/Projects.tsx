@@ -38,9 +38,12 @@ export default function Projects() {
         subtitle={t('projects.pageSubtitle')}
       />
 
-      <section className="container-x pb-24">
+      <section className="container-x pb-24 relative">
+        {/* Subtle grid pattern for pages */}
+        <div className="cyber-grid opacity-30 pointer-events-none -mt-40 h-[150%] z-0" />
+
         {available.length > 0 && (
-          <div className="mb-12 flex flex-wrap justify-center gap-2.5">
+          <div className="mb-14 flex flex-wrap justify-center gap-3 cyber-glass max-w-3xl mx-auto p-2 rounded-full border border-white/5 shadow-lg shadow-black/45 z-10 relative">
             <FilterChip active={filter === 'all'} onClick={() => setFilter('all')}>
               {t('projects.filterAll')}
             </FilterChip>
@@ -52,36 +55,38 @@ export default function Projects() {
           </div>
         )}
 
-        {loading ? (
-          <div className="grid gap-7 sm:grid-cols-2 lg:grid-cols-3">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <ProjectCardSkeleton key={i} />
-            ))}
-          </div>
-        ) : filtered.length > 0 ? (
-          <motion.div layout className="grid gap-7 sm:grid-cols-2 lg:grid-cols-3">
-            <AnimatePresence mode="popLayout">
-              {filtered.map((project, i) => (
-                <motion.div
-                  key={project.id}
-                  layout
-                  initial={{ opacity: 0, scale: 0.94 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.94 }}
-                  transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                >
-                  <Tilt className="h-full" max={8}>
-                    <ProjectCard project={project} index={i} />
-                  </Tilt>
-                </motion.div>
+        <div className="z-10 relative">
+          {loading ? (
+            <div className="grid gap-7 sm:grid-cols-2 lg:grid-cols-3">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <ProjectCardSkeleton key={i} />
               ))}
-            </AnimatePresence>
-          </motion.div>
-        ) : (
-          <p className="rounded-2xl border border-dashed border-white/10 py-20 text-center text-ink-400">
-            {data.length === 0 ? t('projects.empty') : t('projects.emptyFiltered')}
-          </p>
-        )}
+            </div>
+          ) : filtered.length > 0 ? (
+            <motion.div layout className="grid gap-7 sm:grid-cols-2 lg:grid-cols-3">
+              <AnimatePresence mode="popLayout">
+                {filtered.map((project, i) => (
+                  <motion.div
+                    key={project.id}
+                    layout
+                    initial={{ opacity: 0, scale: 0.94 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.94 }}
+                    transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                  >
+                    <Tilt className="h-full" max={8}>
+                      <ProjectCard project={project} index={i} />
+                    </Tilt>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </motion.div>
+          ) : (
+            <p className="rounded-2xl border border-dashed border-white/10 py-20 text-center text-ink-400">
+              {data.length === 0 ? t('projects.empty') : t('projects.emptyFiltered')}
+            </p>
+          )}
+        </div>
       </section>
     </>
   )
@@ -101,13 +106,14 @@ function FilterChip({
       type="button"
       onClick={onClick}
       className={cn(
-        'rounded-full px-5 py-2 text-sm font-semibold transition-all duration-300',
+        'rounded-full px-5 py-2 text-sm font-semibold transition-all duration-300 cursor-pointer select-none',
         active
-          ? 'bg-gradient-to-r from-ember-500 to-ember-600 text-white shadow-lg shadow-ember-600/30'
-          : 'border border-white/10 text-ink-300 hover:border-ember-400/40 hover:text-white',
+          ? 'bg-cyan-500/15 border border-cyan-400 text-cyan-400 shadow-[0_0_12px_rgba(6,182,212,0.25)]'
+          : 'border border-transparent text-ink-300 hover:border-white/10 hover:bg-white/5 hover:text-white',
       )}
     >
       {children}
     </button>
   )
 }
+

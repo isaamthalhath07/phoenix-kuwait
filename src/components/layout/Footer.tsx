@@ -12,9 +12,12 @@ export function Footer() {
   const year = new Date().getFullYear()
 
   return (
-    <footer className="relative mt-24 overflow-hidden border-t border-white/5 bg-ink-900">
-      <div className="absolute -top-32 start-1/2 h-64 w-[40rem] -translate-x-1/2 rounded-full bg-ember-600/10 blur-[120px]" />
-      <div className="container-x relative py-16">
+    <footer className="relative mt-24 overflow-hidden border-t border-white/5 bg-ink-900/90 py-16">
+      {/* Background blueprint grid and glowing orb */}
+      <div className="cyber-grid opacity-60" />
+      <div className="absolute -top-32 start-1/2 h-64 w-[40rem] -translate-x-1/2 rounded-full bg-ember-600/15 blur-[120px] pointer-events-none" />
+
+      <div className="container-x relative z-10">
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
           {/* Brand */}
           <div className="lg:col-span-1">
@@ -22,7 +25,7 @@ export function Footer() {
             <p className="mt-5 max-w-xs text-sm leading-relaxed text-ink-300">
               {t('footer.about')}
             </p>
-            <div className="mt-6 flex gap-3">
+            <div className="mt-6 flex gap-3.5">
               <SocialLink href={SITE.social.instagram} label="Instagram">
                 <InstagramIcon className="h-4.5 w-4.5" />
               </SocialLink>
@@ -45,7 +48,7 @@ export function Footer() {
                 <li key={item.to}>
                   <Link
                     to={item.to}
-                    className="text-sm text-ink-300 transition-colors hover:text-ember-300"
+                    className="text-sm text-ink-300 transition-colors hover:text-ember-400"
                   >
                     {t(item.key)}
                   </Link>
@@ -61,7 +64,7 @@ export function Footer() {
             </h4>
             <ul className="mt-5 space-y-3">
               {SERVICES.slice(0, 5).map((s) => (
-                <li key={s.key} className="text-sm text-ink-300">
+                <li key={s.key} className="text-sm text-ink-300 transition-colors hover:text-ember-450">
                   {t(`services.${s.key}.title`)}
                 </li>
               ))}
@@ -81,7 +84,7 @@ export function Footer() {
               <li>
                 <a
                   href={`tel:${SITE.phone.replace(/\s/g, '')}`}
-                  className="flex items-center gap-3 transition-colors hover:text-ember-300"
+                  className="flex items-center gap-3 transition-colors hover:text-ember-400"
                   dir="ltr"
                 >
                   <Phone className="h-4.5 w-4.5 shrink-0 text-ember-500" />
@@ -91,7 +94,7 @@ export function Footer() {
               <li>
                 <a
                   href={`mailto:${SITE.email}`}
-                  className="flex items-center gap-3 transition-colors hover:text-ember-300"
+                  className="flex items-center gap-3 transition-colors hover:text-ember-400"
                 >
                   <Mail className="h-4.5 w-4.5 shrink-0 text-ember-500" />
                   <span>{SITE.email}</span>
@@ -105,7 +108,7 @@ export function Footer() {
           <p>
             © {year} {isAr ? SITE.nameAr : SITE.nameEn}. {t('footer.rights')}
           </p>
-          <p>{t('footer.builtWith')}</p>
+          <p className="text-ink-400 hover:text-ember-400 transition-colors duration-300">{t('footer.builtWith')}</p>
         </div>
       </div>
     </footer>
@@ -127,9 +130,12 @@ function SocialLink({
       target="_blank"
       rel="noopener noreferrer"
       aria-label={label}
-      className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-ink-200 transition-all hover:-translate-y-0.5 hover:border-ember-400/50 hover:text-ember-300"
+      className="group relative inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 text-ink-200 bg-ink-950/40 transition-all duration-300 hover:-translate-y-1 hover:border-ember-500/50 hover:text-ember-450 hover:shadow-[0_0_15px_rgba(249,115,22,0.25)]"
     >
-      {children}
+      <span className="transition-transform duration-500 group-hover:rotate-[360deg]">
+        {children}
+      </span>
     </a>
   )
 }
+

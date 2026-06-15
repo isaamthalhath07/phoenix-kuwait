@@ -82,21 +82,24 @@ export default function Contact() {
     <>
       <PageHero eyebrow={t('contact.eyebrow')} title={t('contact.title')} subtitle={t('contact.subtitle')} />
 
-      <section className="container-x grid gap-12 py-16 lg:grid-cols-[1fr_1.3fr]">
-        {/* Info */}
-        <Reveal variant="left">
+      <section className="container-x grid gap-12 py-16 lg:grid-cols-[1fr_1.3fr] relative">
+        {/* Page blueprint grid */}
+        <div className="cyber-grid opacity-30 pointer-events-none -mt-40 h-[140%] z-0" />
+
+        {/* Info Cards */}
+        <Reveal variant="left" className="z-10 relative">
           <div className="space-y-5">
             {info.map((item) => {
               const Icon = item.icon
               const content = (
-                <div className="flex items-start gap-4 rounded-2xl border border-white/5 bg-ink-850 p-5 transition-colors hover:border-ember-400/30">
-                  <div className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-ember-500/10 text-ember-400">
+                <div className="flex items-start gap-4 rounded-2xl border border-ember-500/10 bg-ink-900/60 p-5 backdrop-blur-md transition-all duration-350 hover:border-cyan-400/30 hover:shadow-[0_0_15px_rgba(6,182,212,0.1)]">
+                  <div className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
                     <Icon className="h-6 w-6" />
                   </div>
                   <div>
-                    <p className="text-xs uppercase tracking-wider text-ink-400">{item.label}</p>
+                    <p className="text-[10px] font-bold font-mono uppercase tracking-widest text-ink-400">{item.label}</p>
                     <p
-                      className="mt-1 font-medium text-white"
+                      className="mt-1.5 font-semibold text-white tracking-wide"
                       dir={item.ltr ? 'ltr' : undefined}
                     >
                       {item.value}
@@ -105,7 +108,7 @@ export default function Contact() {
                 </div>
               )
               return item.href ? (
-                <a key={item.label} href={item.href} className="block">
+                <a key={item.label} href={item.href} className="block group">
                   {content}
                 </a>
               ) : (
@@ -115,8 +118,8 @@ export default function Contact() {
           </div>
         </Reveal>
 
-        {/* Form */}
-        <Reveal variant="right">
+        {/* Form Container */}
+        <Reveal variant="right" className="z-10 relative">
           <form
             name="contact"
             method="POST"
@@ -124,8 +127,11 @@ export default function Contact() {
             netlify-honeypot="bot-field"
             onSubmit={handleSubmit}
             noValidate
-            className="rounded-3xl border border-white/10 bg-ink-850 p-7 sm:p-9"
+            className="rounded-3xl border border-ember-500/25 cyber-glass-cyan cyber-corners p-7 sm:p-9 shadow-lg shadow-black/40 group relative"
           >
+            {/* Holographic scanner laser line on hover */}
+            <div className="laser-scanner opacity-20 pointer-events-none" />
+
             <input type="hidden" name="form-name" value="contact" />
             <p hidden>
               <label>
@@ -156,6 +162,7 @@ export default function Contact() {
                 error={phoneTouched && phoneInvalid ? t('contact.phoneInvalid') : undefined}
               />
             </div>
+            
             <div className="mt-5">
               <Field
                 label={t('contact.email')}
@@ -169,8 +176,10 @@ export default function Contact() {
                 required
               />
             </div>
+            
             <div className="mt-5">
-              <label className="mb-2 block text-sm font-medium text-ink-200">
+              <label className="mb-2 block text-xs font-bold font-mono uppercase tracking-wider text-ink-300 flex items-center gap-1.5">
+                <span className="h-1.5 w-1.5 rounded-full bg-cyan-400" />
                 {t('contact.message')}
               </label>
               <textarea
@@ -179,28 +188,28 @@ export default function Contact() {
                 rows={5}
                 value={form.message}
                 onChange={(e) => setForm((f) => ({ ...f, message: e.target.value }))}
-                className="w-full resize-none rounded-xl border border-white/10 bg-ink-900 px-4 py-3 text-white placeholder-ink-400 outline-none transition-colors focus:border-ember-400 focus:ring-2 focus:ring-ember-500/20"
+                className="w-full resize-none rounded-xl border border-white/10 bg-ink-950/70 px-4 py-3 text-white placeholder-ink-400/50 outline-none transition-all focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/10 font-medium tracking-wide"
               />
             </div>
 
             <button
               type="submit"
               disabled={status === 'sending'}
-              className="group mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-ember-500 to-ember-600 px-7 py-3.5 font-semibold text-white shadow-lg shadow-ember-600/30 transition-all hover:-translate-y-0.5 hover:shadow-xl disabled:opacity-60 sm:w-auto"
+              className="group mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-ember-500 to-ember-600 px-7 py-3.5 font-semibold text-white shadow-lg shadow-ember-600/30 transition-all hover:-translate-y-0.5 hover:shadow-xl disabled:opacity-60 sm:w-auto cyber-corners cursor-pointer"
             >
               {status === 'sending' && <Spinner className="h-5 w-5 border-white/40 border-t-white" />}
               {status === 'sending' ? t('contact.sending') : t('contact.send')}
             </button>
 
             {status === 'success' && (
-              <p className="mt-5 flex items-center gap-2 rounded-xl bg-emerald-500/10 px-4 py-3 text-sm text-emerald-300">
-                <CheckCircle2 className="h-5 w-5" />
+              <p className="mt-5 flex items-center gap-2 rounded-xl bg-emerald-500/10 px-4 py-3 text-sm text-emerald-300 border border-emerald-500/20 shadow-[0_0_10px_rgba(16,185,129,0.15)]">
+                <CheckCircle2 className="h-5 w-5 shrink-0" />
                 {t('contact.success')}
               </p>
             )}
             {status === 'error' && (
-              <p className="mt-5 flex items-center gap-2 rounded-xl bg-red-500/10 px-4 py-3 text-sm text-red-300">
-                <AlertCircle className="h-5 w-5" />
+              <p className="mt-5 flex items-center gap-2 rounded-xl bg-red-500/10 px-4 py-3 text-sm text-red-300 border border-red-500/20 shadow-[0_0_10px_rgba(239,68,68,0.15)]">
+                <AlertCircle className="h-5 w-5 shrink-0" />
                 {t('contact.error')}
               </p>
             )}
@@ -240,9 +249,10 @@ function Field({
 }) {
   return (
     <div>
-      <label className="mb-2 block text-sm font-medium text-ink-200">
+      <label className="mb-2 block text-xs font-bold font-mono uppercase tracking-wider text-ink-300 flex items-center gap-1.5">
+        <span className="h-1.5 w-1.5 rounded-full bg-cyan-400" />
         {label}
-        {required && <span className="text-ember-400"> *</span>}
+        {required && <span className="text-ember-500"> *</span>}
       </label>
       <input
         type={type}
@@ -256,13 +266,14 @@ function Field({
         aria-invalid={Boolean(error)}
         onChange={(e) => onChange(e.target.value)}
         onBlur={onBlur}
-        className={`w-full rounded-xl border bg-ink-900 px-4 py-3 text-white placeholder-ink-400 outline-none transition-colors focus:ring-2 ${
+        className={`w-full rounded-xl border bg-ink-950/70 px-4 py-3 text-white placeholder-ink-400/50 outline-none transition-all focus:ring-2 font-medium tracking-wide ${
           error
-            ? 'border-red-400/60 focus:border-red-400 focus:ring-red-500/20'
-            : 'border-white/10 focus:border-ember-400 focus:ring-ember-500/20'
+            ? 'border-red-400/60 focus:border-red-400 focus:ring-red-500/10'
+            : 'border-white/10 focus:border-cyan-400 focus:ring-cyan-500/10'
         }`}
       />
-      {error && <p className="mt-1.5 text-xs text-red-300">{error}</p>}
+      {error && <p className="mt-1.5 text-xs text-red-350">{error}</p>}
     </div>
   )
 }
+

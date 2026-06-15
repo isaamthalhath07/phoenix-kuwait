@@ -88,39 +88,48 @@ export default function ProjectDetail() {
         </div>
       </div>
 
-      <div className="container-x grid gap-12 py-16 lg:grid-cols-[1fr_320px]">
+      <div className="container-x grid gap-12 py-16 lg:grid-cols-[1fr_320px] relative">
+        {/* Page cyber grid backing */}
+        <div className="cyber-grid opacity-20 pointer-events-none -mt-24 h-[120%] z-0" />
+
         {/* Content */}
-        <div>
+        <div className="z-10 relative">
           <Reveal variant="fade">
-            <p className="text-xl leading-relaxed text-ink-100">
+            <p className="text-xl leading-relaxed text-ink-100 font-medium border-l-2 border-ember-550 pl-4 py-1">
               {pick(project.excerpt_en, project.excerpt_ar)}
             </p>
           </Reveal>
           <div className="mt-8 space-y-5">
             {paragraphs.map((p, i) => (
               <Reveal key={i} variant="up" delay={i * 0.04}>
-                <p className="leading-relaxed text-ink-300">{p}</p>
+                <p className="leading-relaxed text-ink-300 text-sm sm:text-base">{p}</p>
               </Reveal>
             ))}
           </div>
 
           {/* Gallery */}
           {project.gallery.length > 0 && (
-            <div className="mt-12">
-              <h2 className="text-2xl font-bold">{t('projects.gallery')}</h2>
+            <div className="mt-14">
+              <h2 className="text-2xl font-bold tracking-wide uppercase">
+                <span className="text-cyan-400 font-mono text-sm mr-2 inline-block">[ MEDIA ]</span>
+                {t('projects.gallery')}
+              </h2>
               <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3">
                 {project.gallery.map((url, i) => (
                   <Reveal key={url} variant="scale" delay={i * 0.05}>
                     <button
                       type="button"
                       onClick={() => setLightbox(url)}
-                      className="group block aspect-square w-full overflow-hidden rounded-xl border border-white/5"
+                      className="group relative block aspect-square w-full overflow-hidden rounded-xl border border-white/10 cyber-glass hover:border-cyan-400/40 cursor-pointer shadow-md transition-all duration-300"
                     >
+                      {/* Laser scanner sweeps on hover */}
+                      <div className="laser-scanner opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      
                       <img
                         src={url}
                         alt={`${title} ${i + 1}`}
                         loading="lazy"
-                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                       />
                     </button>
                   </Reveal>
@@ -131,24 +140,30 @@ export default function ProjectDetail() {
         </div>
 
         {/* Sidebar meta */}
-        <aside className="lg:sticky lg:top-28 lg:self-start">
-          <div className="rounded-2xl border border-white/10 bg-ink-850 p-6">
-            <h2 className="text-lg font-bold text-white">{t('projects.details')}</h2>
-            <dl className="mt-5 space-y-5">
+        <aside className="lg:sticky lg:top-28 lg:self-start z-10">
+          <div className="rounded-2xl border border-ember-500/25 cyber-glass-cyan cyber-corners p-6 shadow-lg shadow-black/40 relative group">
+            {/* Holographic scanner laser line on hover */}
+            <div className="laser-scanner opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+            <h2 className="text-lg font-bold text-white tracking-wider uppercase flex items-center gap-2">
+              <span className="h-2 w-2 rounded-full bg-cyan-400 shadow-[0_0_8px_#22d3ee] animate-pulse" />
+              {t('projects.details')}
+            </h2>
+            <dl className="mt-6 space-y-5">
               {meta.map((m) => {
                 const Icon = m.icon
                 return (
-                  <div key={m.label} className="flex items-start gap-3">
-                    <Icon className="mt-0.5 h-5 w-5 shrink-0 text-ember-500" />
+                  <div key={m.label} className="flex items-start gap-3 border-b border-white/5 pb-3 last:border-b-0 last:pb-0">
+                    <Icon className="mt-0.5 h-5 w-5 shrink-0 text-cyan-400" />
                     <div>
-                      <dt className="text-xs uppercase tracking-wider text-ink-400">{m.label}</dt>
-                      <dd className="mt-0.5 font-medium text-white">{m.value}</dd>
+                      <dt className="text-[10px] font-bold font-mono uppercase tracking-widest text-ink-400">{m.label}</dt>
+                      <dd className="mt-1.5 text-sm font-semibold text-white">{m.value}</dd>
                     </div>
                   </div>
                 )
               })}
             </dl>
-            <Button to="/contact" className="mt-7 w-full">
+            <Button to="/contact" className="mt-8 w-full cyber-corners shadow-lg shadow-ember-600/20">
               {t('cta.button')}
             </Button>
           </div>
