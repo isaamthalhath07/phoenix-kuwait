@@ -1,0 +1,14 @@
+<svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="phx" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fcd34d" />
+      <stop offset="45%" stop-color="#f97316" />
+      <stop offset="100%" stop-color="#c2410c" />
+    </linearGradient>
+  </defs>
+  <rect width="48" height="48" rx="11" fill="#0b0f1a" />
+  <path
+    d="M24 6c2.2 5.3 1.2 9-1.2 12.2 3.9-.8 6.1-3.4 7.3-6.4 2 4.8 1.2 9.3-1.9 13 2.9-.5 5.1-2 6.6-4.2.7 5.6-2 10.5-6.8 13.2 2.5.3 4.9-.2 7-1.4-2.4 4.6-7.3 7.6-12.7 7.6-7.5 0-13.6-5.6-13.6-12.7 0-4.6 2.5-8.3 5.4-11.6-.8 2.7-.6 5.1.7 7.1C16.2 22.3 16 14.6 24 6Z"
+    fill="url(#phx)"
+  />
+</svg>
